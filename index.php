@@ -59,7 +59,7 @@
         <a-nft
         id="handler"
             videohandler
-            type='nft' url='./filimoo'
+            type='nft' url='/arjs-test/filimoo'
             smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
         >
             <a-video
