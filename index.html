@@ -50,7 +50,7 @@
         embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
 
         <a-assets>
-            <video src="mov_bbb.mp4"
+            <video src="./mov_bbb.mp4"
                 preload="auto" id="vid" response-type="arraybuffer" loop
                 crossorigin webkit-playsinline autoplay muted playsinline>
             </video>
@@ -59,7 +59,7 @@
         <a-nft
         id="handler"
             videohandler
-            type='nft' url='filimoo'
+            type='nft' url='./filimoo'
             smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
         >
             <a-video
