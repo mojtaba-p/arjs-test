@@ -1,77 +1,78 @@
-<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.3.0/dist/aframe-master.min.js"></script>
+<!DOCTYPE html>
+<html lang="fa">
 
-<!--<script src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>-->
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    
+    <script src="/assets/aframe.min.js"></script>
+    <script src="/assets/aframe-extras.min.js"></script>
+    <script src="/assets/mindar-image-aframe.prod.js"></script>
 
-<script>
-    window.onload = function() {
-        let video = document.getElementById("vid");
-        document.getElementById('handler').addEventListener("markerFound", function(){
-            console.log('found')
-            video.play();
-        });
-        
-        document.getElementById('handler').addEventListener("markerLost", function(){
-            console.log('lost')
-            video.pause();
-        });
+    <style>
+        #example-scanning-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 2;
+        }
 
-    };
-</script>
+        #example-scanning-overlay.hidden {
+            display: none;
+        }
 
-<style>
-    .arjs-loader {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        #example-scanning-overlay img {
+            opacity: 0.6;
+            width: 90%;
+            align-self: center;
+        }
 
-    .arjs-loader div {
-        text-align: center;
-        font-size: 1.25em;
-        color: white;
-    }
-</style>
+        #example-scanning-overlay .inner .scanline {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: white;
+            animation: move 2s linear infinite;
+        }
+    </style>
+</head>
 
-<body style='margin : 0px; overflow: hidden;'>
-    <div class="arjs-loader">
-        <div>Loading, please wait...</div>
+<body>
+    <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+            <img src="/assets/logo.png" />
+        </div>
     </div>
-    <a-scene
-        vr-mode-ui="enabled: false;"
-        renderer='antialias: true; alpha: true; precision: medium;'
-        embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
-
+    <img src="/assets/logo.png" alt="logo" style="position: absolute; right: 43%; bottom: 20px" height="10%" id="logo">
+    <a-scene color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+        xr-mode-ui="enabled: false"
+        mindar-image="uiLoading: #example-scanning-overlay; imageTargetSrc: https://<?php echo $_SERVER['SERVER_NAME'] ?>/assets<?php echo $_SERVER['REQUEST_URI'] ?>.mind;"
+        device-orientation-permission-ui="enabled: false">
         <a-assets>
-            <video src="./mov_bbb.mp4"
-                preload="auto" id="vid" response-type="arraybuffer" loop
-                crossorigin webkit-playsinline autoplay muted playsinline>
+            <video src="../mov_bbb.mp4" preload="auto" id="vid" response-type="arraybuffer" loop crossorigin
+                webkit-playsinline autoplay playsinline>
             </video>
         </a-assets>
 
-        <a-nft
-        id="handler"
-            videohandler
-            type='nft' url='./mavarent'
-            smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
-        >
-            <a-video
-                src="#vid"
-                position='-10 -10 0'
-                rotation='90 0 180'
-                width='300'
-                height='175'
-                >
-            </a-video>
-        </a-nft>
-		<a-entity camera></a-entity>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-	</a-scene>
+        <a-entity mindar-image-target="targetIndex: 1" class="target">
+            <a-video src="#vid" position='0 0 0' rotation='0 0 0' scale="1 1 1">
+            </a-video>
+        </a-entity>
+    </a-scene>
+    <script>
+
+        document.querySelectorAll('.target').forEach(function (item) {
+            item.addEventListener('targetFound', () => document.querySelector('#vid').play());
+            item.addEventListener('targetLost', () => document.querySelector('#vid').pause());
+        })
+    </script>
 </body>
+
+</html>
