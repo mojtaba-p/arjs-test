@@ -1,57 +1,26 @@
 <!DOCTYPE html>
 <html lang="fa">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
-    
-    <script src="/assets/aframe.min.js"></script>
-    <script src="/assets/aframe-extras.min.js"></script>
-    <script src="/assets/mindar-image-aframe.prod.js"></script>
-
-    <style>
-        #example-scanning-overlay {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            background: transparent;
-            z-index: 2;
-        }
-
-        #example-scanning-overlay.hidden {
-            display: none;
-        }
-
-        #example-scanning-overlay img {
-            opacity: 0.6;
-            width: 90%;
-            align-self: center;
-        }
-
-        #example-scanning-overlay .inner .scanline {
-            position: absolute;
-            width: 100%;
-            height: 10px;
-            background: white;
-            animation: move 2s linear infinite;
-        }
-    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="./assets/aframe.min.js"></script>
+<script src="./assets/aframe-extras.min.js"></script>
+<script src="./assets/mindar-image-aframe.prod.js"></script>
+<link rel="stylesheet" href="./assets/style.css">
 </head>
 
 <body>
-    <div id="example-scanning-overlay" class="hidden">
-        <div class="inner">
-            <img src="/assets/logo.png" />
+    <div class="modal-container" id="noticeModal">
+        <div class="modal-close" onclick="closeModal()">&times;</div>
+        <div class="modal-content">
+            <h3>hi</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint beatae asperiores commodi aut rerum fugiat, quia obcaecati. Iure, ullam. Asperiores, laboriosam veritatis aperiam ab reprehenderit molestias quisquam consectetur enim esse?</p>
+            <button onclick="closeModal()">متوجه شدم</button>
         </div>
     </div>
-    <img src="/assets/logo.png" alt="logo" style="position: absolute; right: 43%; bottom: 20px" height="10%" id="logo">
+
+    <img src="./assets/logo.png" alt="logo" style="position: absolute; right: 43%; bottom: 20px" height="10%" id="logo">
     <a-scene color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
         xr-mode-ui="enabled: false"
-        mindar-image="uiLoading: #example-scanning-overlay; imageTargetSrc: https://<?php echo $_SERVER['SERVER_NAME'] ?>/assets<?php echo $_SERVER['REQUEST_URI'] ?>.mind;"
+        mindar-image="uiLoading: #loadingOverlay; imageTargetSrc: https://<?php echo $_SERVER['SERVER_NAME'] ?>/assets<?php echo $_SERVER['REQUEST_URI'] ?>.mind;"
         device-orientation-permission-ui="enabled: false">
         <a-assets>
             <video src="../mov_bbb.mp4" preload="auto" id="vid" response-type="arraybuffer" loop crossorigin
@@ -72,6 +41,16 @@
             item.addEventListener('targetFound', () => document.querySelector('#vid').play());
             item.addEventListener('targetLost', () => document.querySelector('#vid').pause());
         })
+
+        window.addEventListener('load', () => {
+            const modal = document.getElementById('noticeModal');
+            modal.classList.add('active'); 
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('noticeModal');
+            modal.classList.remove('active');
+        }
     </script>
 </body>
 
